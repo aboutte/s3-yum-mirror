@@ -1,2 +1,11 @@
 .envrc
 config.yaml
+.env*
+.idea
+.bundle
+.*.swp
+.DS_Store
+*.pem
+*.pub
+*_rsa
+desktop.ini
