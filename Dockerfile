@@ -1,12 +1,13 @@
-FROM centos:7
+FROM registry.access.redhat.com/rhel7.4:latest
 
-RUN yum -y install ruby rubygems ruby-devel rsync createrepo && yum -y update && yum clean all
-RUN gem install bundler
+ARG RHEL_USERNAME
+ARG RHEL_PASSWORD
 
-COPY example_config.yaml /config.yaml
 COPY yum_mirror.rb /yum_mirror.rb
+COPY Gemfile.lock /Gemfile.lock
 COPY Gemfile /Gemfile
+COPY bootstrap.sh /bootstrap.sh
 
-RUN cd / && bundle install
+RUN /bootstrap.sh
 
 CMD /yum_mirror.rb

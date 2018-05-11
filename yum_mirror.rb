@@ -138,7 +138,7 @@ mirrors.each_pair do |name,mirror|
 	puts "Now syncing #{name}"
 	#Check we have a 'dist'
 	if !mirror[:dist]
-		raise "Distirbution not specified for #{name}:#{mirror[:url]}!"
+		raise "Distribution not specified for #{name}:#{mirror[:url]}!"
 	else
 		#Do we have a custom destination?
 		if !mirror[:dest]

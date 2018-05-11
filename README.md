@@ -1,4 +1,4 @@
-# docker-yum-mirror
+# docker-s3-yum-mirror
 
 Builds yum package mirrors for you in a containers via a yaml formatted config file.
 
@@ -31,13 +31,13 @@ A resulting directory structure may look like:
 ```
 all would be `all` the rpms from os + updates, as hardlinks. `all.2016-06-14` would be what `all` looked like on that date, all hardlinks to save space. `os` and `updates` would be mirrors of the  upstream repos.
 
-In production i would, most likley, enable all+datestamp_all, do a sync, then disable then until i wanted to make another snapshot. subsequent runs would sync upstream, but leave teh datestamped 'all' directory as is.
+In production I would, most likely, enable all+datestamp_all, do a sync, then disable then until I wanted to make another snapshot. subsequent runs would sync upstream, but leave teh datestamped 'all' directory as is.
 
 
 ## Usage
 
 ```
-docker run -v /path/to/storage:/mirror -v /path/to/config.yaml:/config.yaml sjoeboo/docker-yum-mirror:latest
+docker run --rm -v ~/Desktop/mirror:/mirror -v ~/r/docker-s3-yum-mirror/config.yaml:/config.yaml s3-yum-mirror:latest
 ```
 
 ## config example:
@@ -103,3 +103,20 @@ name: (name of repo, will be appended to mirror_base + dist unless dest is speci
   :hardlink_datestamp: (Boolean, should that copy be made of hardlinks)
   :link_datestamp: (Should the original repo be turned into a link to the most recent datestamped version)
 ```
+
+## Build
+
+```
+docker image build --force-rm --tag s3-yum-mirror . --build-arg RHEL_USERNAME=$RHEL_USERNAME --build-arg RHEL_PASSWORD=$RHEL_PASSWORD
+```
+
+
+## Goals
+
+https://access.redhat.com/solutions/3176811#share
+https://access.redhat.com/solutions/23016
+
+- support centos and rhel
+- support subscription repos for rhel
+- support point in time snapthos
+- support sync to s3
